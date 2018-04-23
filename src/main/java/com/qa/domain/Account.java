@@ -16,9 +16,9 @@ public class Account {
 		@Column(length = 50)
 		private String secondName;
 		@Column(length = 4)
-		private int accountNumber;
+		private String accountNumber;
 		
-		public Account(String firstName, String secondName, int accountNumber) {
+		public Account(String firstName, String secondName, String accountNumber) {
 			this.firstName = firstName;
 			this.secondName = secondName;
 			this.accountNumber = accountNumber;
@@ -41,11 +41,11 @@ public class Account {
 		this.secondName = secondName;
 	}
 
-	public int getAccountNumber() {
+	public String getAccountNumber() {
 		return accountNumber;
 	}
 
-	public void setAccountNumber(int accountNumber) {
+	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
 	}
 
