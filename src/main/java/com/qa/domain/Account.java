@@ -1,10 +1,12 @@
 package com.qa.domain;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+@Entity
 public class Account {
 
 		@Id @GeneratedValue(strategy=GenerationType.AUTO)
@@ -15,6 +17,12 @@ public class Account {
 		private String secondName;
 		@Column(length = 4)
 		private int accountNumber;
+		
+		public Account(String firstName, String secondName, int accountNumber) {
+			this.firstName = firstName;
+			this.secondName = secondName;
+			this.accountNumber = accountNumber;
+		}
 
 
 	public String getFirstName() {
@@ -33,11 +41,11 @@ public class Account {
 		this.secondName = secondName;
 	}
 
-	public String getAccountNumber() {
+	public int getAccountNumber() {
 		return accountNumber;
 	}
 
-	public void setAccountNumber(String accountNumber) {
+	public void setAccountNumber(int accountNumber) {
 		this.accountNumber = accountNumber;
 	}
 
