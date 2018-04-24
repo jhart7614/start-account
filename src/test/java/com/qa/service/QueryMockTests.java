@@ -76,9 +76,15 @@ public class QueryMockTests {
 	}
 
 	@Test
-	public void DeleteAccount() {
-		String reply = repo.deleteAccount(1);
+	public void DeleteAccountPass() {
+		String reply = repo.deleteAccount(MOCK_OBJECT);
 		Assert.assertEquals(reply, "{\"Account Deleted\"}");
+	}
+	
+	@Test
+	public void DeleteAccountFail() {
+		String reply = repo.deleteAccount(null);
+		Assert.assertEquals(reply, "{\"Cant Delete: Account does not exist\"}");
 	}
 
 }

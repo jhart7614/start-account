@@ -53,9 +53,17 @@ public class Repository {
     }
   
     @Transactional(REQUIRED)
-    public String deleteAccount(long id) {
-		em.remove(em.find(Account.class, id));
-		return "{\"Account Deleted\"}";
+    public String deleteAccount(String accountStr) {
+    	Account AccountToDelete = util.getObjectForJSON(accountStr, Account.class);
+    	
+    	if (AccountToDelete != null) {
+    		em.remove(AccountToDelete);
+    		return "{\"Account Deleted\"}";
+		}
+		else {
+			return "{\"Cant Delete: Account does not exist\"}";
+		}
+		
     }
 
 	public void setManager(EntityManager manager) {
