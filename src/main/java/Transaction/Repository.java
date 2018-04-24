@@ -37,10 +37,10 @@ public class Repository {
     }
     
     @Transactional(REQUIRED)
-    public String updateAccount(String UpdatedAccountString, int id) {
+    public String updateAccount(long id, String UpdatedAccountString) {
 		Account updatedAccountObj = util.getObjectForJSON(UpdatedAccountString, Account.class);
 		Account OriginalAccount = em.find(Account.class, id);
-		if (OriginalAccount != null) {
+		if (UpdatedAccountString != null) {
 			OriginalAccount = updatedAccountObj;
 			em.merge(OriginalAccount);
 			return "{\"account sucessfully updated\"}";
@@ -51,8 +51,9 @@ public class Repository {
     }
   
     @Transactional(REQUIRED)
-    public void deleteAccount(int id) {
+    public String deleteAccount(long id) {
 		em.remove(em.find(Account.class, id));
+		return "{\"Account Deleted\"}";
     }
 
 	public void setManager(EntityManager manager) {
@@ -64,5 +65,4 @@ public class Repository {
 		this.util = util;
 	}
 
- 
 }

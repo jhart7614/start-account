@@ -48,5 +48,22 @@ public class QueryMockTests {
 		Assert.assertEquals(mockAccount, "{\"account has been sucessfully added\"}");
 	}
 	
+	@Test
+	public void UpdateAccountSuccess() {
+		String reply = repo.updateAccount(1, MOCK_OBJECT);
+		Assert.assertEquals(reply, "{\"account sucessfully updated\"}");
+	}
 	
+	@Test
+	public void UpdateAccountFail() {
+		String reply = repo.updateAccount(1, null);
+		Assert.assertEquals(reply, "{\"Not updated: Original account id does not exist\"}");
+	}
+
+	@Test
+	public void DeleteAccount() {
+		String reply = repo.deleteAccount(1);
+		Assert.assertEquals(reply, "{\"Account Deleted\"}");
+	}
+
 }
