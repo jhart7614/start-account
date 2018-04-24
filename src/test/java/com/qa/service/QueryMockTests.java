@@ -43,7 +43,7 @@ public class QueryMockTests {
 	private static final String MOCK_OBJECT = "{\"firstName\":\"John\",\"secondName\":\"Doe\",\"accountNumber\":\"1234\"}";
 	
 	@Test
-	public void createAccount( ) {
+	public void createAccount() {
 		String mockAccount = repo.createAccount(MOCK_OBJECT);
 		Assert.assertEquals(mockAccount, "{\"account has been sucessfully added\"}");
 	}
