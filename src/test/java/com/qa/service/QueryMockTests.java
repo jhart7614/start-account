@@ -4,6 +4,10 @@ import static org.junit.Assert.*;
 
 import javax.management.*;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.Mockito;
 
 import com.qa.domain.Account;
 import com.qa.util.JSONUtil;
@@ -41,6 +46,7 @@ public class QueryMockTests {
 	}
 	
 	private static final String MOCK_OBJECT = "{\"firstName\":\"John\",\"secondName\":\"Doe\",\"accountNumber\":\"1234\"}";
+	private static final String MOCK_DATA_ARRAY = "[{\"firstName\":\"John\",\"secondName\":\"Doe\",\"accountNumber\":\"1234\"}]";
 	
 	@Test
 	public void createAccount() {
@@ -48,6 +54,15 @@ public class QueryMockTests {
 		Assert.assertEquals(mockAccount, "{\"account has been sucessfully added\"}");
 	}
 	
+	@Test
+	public void testGetAllAccounts() {
+		Mockito.when(em.createQuery(Mockito.anyString())).thenReturn(query);
+		List<Account> accounts = new ArrayList<Account>();
+		accounts.add(new Account("John", "Doe", "1234"));
+		Mockito.when(query.getResultList()).thenReturn(accounts);
+		Assert.assertEquals(MOCK_DATA_ARRAY, repo.GetAccounts());
+	}
+		
 	@Test
 	public void UpdateAccountSuccess() {
 		String reply = repo.updateAccount(1, MOCK_OBJECT);

@@ -3,11 +3,13 @@ package Transaction;
 import static javax.transaction.Transactional.TxType.REQUIRED;
 import static javax.transaction.Transactional.TxType.SUPPORTS;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
@@ -24,8 +26,8 @@ public class Repository {
     private JSONUtil util;
 
     public String GetAccounts() {
-        TypedQuery<Account> query = em.createQuery("SELECT m FROM Account m ORDER BY m.firstName DESC", Account.class);
-        List<Account> accounts = query.getResultList();
+        Query query = em.createQuery("SELECT m FROM Account m ORDER BY m.firstName DESC");
+        Collection<Account> accounts = query.getResultList();
         return util.getJSONForObject(accounts);
     }
     
