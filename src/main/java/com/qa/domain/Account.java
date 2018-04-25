@@ -16,7 +16,7 @@ public class Account {
 		@Column(length = 50)
 		private String secondName;
 		@Column(length = 4)
-		private String accountNumber;
+		public String accountNumber;
 		
 		public Account(String firstName, String secondName, String accountNumber) {
 			this.firstName = firstName;

@@ -2,6 +2,7 @@ package Transaction;
 
 import javax.enterprise.inject.Alternative;
 import static javax.transaction.Transactional.TxType.REQUIRED;
+import static javax.transaction.Transactional.TxType.SUPPORTS;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,7 @@ import javax.transaction.Transactional;
 import com.qa.domain.Account;
 import com.qa.util.JSONUtil;
 
+@Transactional(SUPPORTS)
 @Alternative
 public class MapRepository implements AccountInterface {
 	
@@ -42,11 +44,17 @@ public class MapRepository implements AccountInterface {
     public String createAccount(String newAccount) {
 		ID = ID + 1;
 		Account newAccountObj = util.getObjectForJSON(newAccount, Account.class);
-		accountMap.put(ID, newAccountObj);
-		return "{\"account sucessfully created\"}";
 		
+		if (newAccountObj != null) {
+			return "{\"Not Created: Account Already Exists\"}";
+		}
+		else {
+			accountMap.put(ID, newAccountObj);
+			return "{\"account sucessfully created\"}";
+			
+		}
     }
-    
+		
 	@Override
     @Transactional(REQUIRED)
     public String updateAccount(long id, String UpdatedAccountString) {
@@ -73,4 +81,13 @@ public class MapRepository implements AccountInterface {
 		}
 		
     }
+	
+	public void setManager(EntityManager manager) {
+		this.em = manager;
+		
+	}
+	
+	public void setUtil(JSONUtil util) {
+		this.util = util;
+	}
 }

@@ -1,8 +1,5 @@
 package com.qa.service;
 
-import static org.junit.Assert.*;
-
-import javax.management.*;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -24,7 +21,7 @@ import com.qa.util.JSONUtil;
 import Transaction.Repository;
 
 @RunWith(MockitoJUnitRunner.class)
-public class QueryMockTests {
+public class RepositoryMockTests {
 
 	
 	@InjectMocks
