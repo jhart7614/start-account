@@ -6,9 +6,9 @@ public interface AccountInterface {
 
 	String createAccount(String newAccount);
 
-	String updateAccount(Long id, String UpdatedAccountString);
-
 	String deleteAccount(String accountStr);
+
+	String updateAccount(long id, String UpdatedAccountString);
 
 }
 

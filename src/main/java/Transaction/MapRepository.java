@@ -1,24 +1,30 @@
 package Transaction;
 
+import javax.enterprise.inject.Alternative;
 import static javax.transaction.Transactional.TxType.REQUIRED;
 
-import static javax.transaction.Transactional.TxType.SUPPORTS;
+import java.util.HashMap;
+import java.util.Map;
 
-import java.util.Collection;
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import com.qa.domain.Account;
 import com.qa.util.JSONUtil;
 
-
-@Transactional(SUPPORTS)
-@Default
-public class Repository implements AccountInterface {
+@Alternative
+public class MapRepository implements AccountInterface {
+	
+	private Map<Long, Account> accountMap = new HashMap<Long, Account>();
+	private Long ID;
+	
+	public MapRepository() {
+		
+		this.accountMap = accountMap;
+		ID = 1L;
+	}
 	
 	@PersistenceContext(unitName = "primary")
     private EntityManager em;
@@ -28,27 +34,25 @@ public class Repository implements AccountInterface {
 
 	@Override
     public String GetAccounts() {
-        Query query = em.createQuery("SELECT m FROM Account m ORDER BY m.firstName DESC");
-        Collection<Account> accounts = query.getResultList();
-        return util.getJSONForObject(accounts);
+        return util.getJSONForObject(accountMap.values());
     }
     
 	@Override
     @Transactional(REQUIRED)
     public String createAccount(String newAccount) {
-		Account account = util.getObjectForJSON(newAccount, Account.class);
-		em.persist(account);
-		return "{\"account has been sucessfully added\"}";
+		ID = ID + 1;
+		Account newAccountObj = util.getObjectForJSON(newAccount, Account.class);
+		accountMap.put(ID, newAccountObj);
+		return "{\"account sucessfully created\"}";
+		
     }
     
 	@Override
     @Transactional(REQUIRED)
     public String updateAccount(long id, String UpdatedAccountString) {
 		Account updatedAccountObj = util.getObjectForJSON(UpdatedAccountString, Account.class);
-		Account OriginalAccount = em.find(Account.class, id);
 		if (UpdatedAccountString != null) {
-			OriginalAccount = updatedAccountObj;
-			em.merge(OriginalAccount);
+			accountMap.put(id, updatedAccountObj);
 			return "{\"account sucessfully updated\"}";
 		}
 		else {
@@ -56,12 +60,12 @@ public class Repository implements AccountInterface {
 		}
     }
   
-    @Transactional(REQUIRED)
+	@Transactional(REQUIRED)
     public String deleteAccount(String accountStr) {
     	Account AccountToDelete = util.getObjectForJSON(accountStr, Account.class);
     	
     	if (AccountToDelete != null) {
-    		em.remove(AccountToDelete);
+    		accountMap.remove(AccountToDelete);
     		return "{\"Account Deleted\"}";
 		}
 		else {
@@ -69,14 +73,4 @@ public class Repository implements AccountInterface {
 		}
 		
     }
-
-	public void setManager(EntityManager manager) {
-		this.em = manager;
-		
-	}
-	
-	public void setUtil(JSONUtil util) {
-		this.util = util;
-	}
-
 }
